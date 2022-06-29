@@ -1,0 +1,10 @@
+Jittor/
+.vscode/
+gan-jittor/
+SPADE/
+stylegan2/
+stylegan2-pytorch/
+t1/
+NVIDIA-Linux-x86_64-510.47.03.run
+results/
+checkpoints/
