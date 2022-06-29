@@ -80,7 +80,7 @@ $CC-FPSE$ 网络主要是受 $SPADE$ 网络启发而来的。主要使用了一�
 
 
 <center>
-<img src="C:\Users\19749\AppData\Roaming\Typora\typora-user-images\image-20220629153908458.png" alt="image-20220629153908458" style="zoom: 50%;" />
+<img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimage-20220629153908458.png" alt="image-20220629153908458" style="zoom: 50%;" />
 </center>
 
 上图是采取的训练损失函数。其余的鉴别器网络基本与 $SPADE$ 一致。论文中给出的实验效果要优于 $SPADE$。
