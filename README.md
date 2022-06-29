@@ -28,17 +28,17 @@
 
 ## 算法背景
 
-我们主要使用 $Jittor$ 复现了 $GauGAN$（[Semantic~Image~Synthesis~with~Spatially-Adaptive Normalization](https://arxiv.org/abs/1903.07291)）和 $FPSE$（[Learning to Predict Layout-to-image Conditional Convolutions for Semantic Image Synthesis](https://arxiv.org/abs/1910.06809)）的模型结构并成功跑通训练和测试流程，基本复现了原论文的结果。
+我们主要使用 $Jittor$ 复现了 $GauGAN$（[Semantic Image Synthesis with Spatially-Adaptive Normalization](https://arxiv.org/abs/1903.07291)）和 $FPSE$（[Learning to Predict Layout-to-image Conditional Convolutions for Semantic Image Synthesis](https://arxiv.org/abs/1910.06809)）的模型结构并成功跑通训练和测试流程，基本复现了原论文的结果。
 
 ### $GauGAN$
 
-$GauGAN$，即 $SPADE$ 的主要创新点在于使用了新的 $Spatially-Adaptive \ Normalization$ 层来取代传统的 $Batch~Normalization$ 层，以此解决了 $pix2pix$ 等算法中会丢失部分输入语义分割图像信息的问题。主要的修改内容在于 $\gamma$ 和 $\beta$ 的计算不同。
+$GauGAN$，即 $SPADE$ 的主要创新点在于使用了新的 $Spatially-Adaptive \ Normalization$ 层来取代传统的 $Batch \ Normalization$ 层，以此解决了 $pix2pix$ 等算法中会丢失部分输入语义分割图像信息的问题。主要的修改内容在于 $\gamma$ 和 $\beta$ 的计算不同。
 
 <center>
 <img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg1.png" alt="img1" style="zoom:33%;" />
 </center>
 
-在 $Batch \ Normalization$ 中 $\gamma$ 和 $\beta$ 的计算是通过网络训练得到的，而 $Spatially \ Adaptive~Normalization$ 中 $\gamma$ 和 $\beta$ 是通过语义分割图像计算得到的。
+在 $Batch \ Normalization$ 中 $\gamma$ 和 $\beta$ 的计算是通过网络训练得到的，而 $Spatially \ Adaptive \ Normalization$ 中 $\gamma$ 和 $\beta$ 是通过语义分割图像计算得到的。
 
 <center>
 <img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg2.png" alt="img2" style="zoom:50%;" />
@@ -48,13 +48,13 @@ $GauGAN$，即 $SPADE$ 的主要创新点在于使用了新的 $Spatially-Adapti
 <img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg3.png" alt="img3" style="zoom:46.5%;" />
 </center>
 
-$Spatially-Adaptive \ Normalization$ 的极算过程如公式 $(1)$ 所示。在 $Batch \ Normalization$ 中， $\gamma$ 和 $\beta$ 是一维张量，其中每个值对应输入特征图的每个通道，而在 Spatially-Adaptive~Normalization$ 中， $\gamma$ 和 $\beta$ 是三维矩阵，除了通道维度外还有宽和高维度，因此公式 $(1)$ 中 $\gamma$ 和 $\beta$ 下标包含 $c,y,x$ 三个符号。均值μ和标准差σ的计算如公式 $(2)(3)$ 所示，这部分和 $Batch~Normalization$ 中的计算一样。
+$Spatially-Adaptive \ Normalization$ 的极算过程如公式 $(1)$ 所示。在 $Batch \ Normalization$ 中， $\gamma$ 和 $\beta$ 是一维张量，其中每个值对应输入特征图的每个通道，而在 Spatially-Adaptive \ Normalization$ 中， $\gamma$ 和 $\beta$ 是三维矩阵，除了通道维度外还有宽和高维度，因此公式 $(1)$ 中 $\gamma$ 和 $\beta$ 下标包含 $c,y,x$ 三个符号。均值μ和标准差σ的计算如公式 $(2)(3)$ 所示，这部分和 $Batch \ Normalization$ 中的计算一样。
 
 <center>
 <img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg4.png" alt="img4" style="zoom: 33%;" />
 </center>
 
-网络结构方面，生成器采用堆叠多个 $SPADE ~ResBlk$ 实现，其中每个 $SPADE~ResBlk$ 的结构如左侧所示， $Spatially-Adaptive~Normalization$ 层中的 $\gamma$ 和 $\beta$ 参数通过输入的语义分割图像计算得到。
+网络结构方面，生成器采用堆叠多个 $SPADE \ ResBlk$ 实现，其中每个 $SPADE \ ResBlk$ 的结构如左侧所示， $Spatially-Adaptive \ Normalization$ 层中的 $\gamma$ 和 $\beta$ 参数通过输入的语义分割图像计算得到。
 
 <center>
 <img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg5.png" alt="img5" style="zoom:50%;" />
@@ -66,7 +66,7 @@ $Spatially-Adaptive \ Normalization$ 的极算过程如公式 $(1)$ 所示。在
 <img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg6.png" alt="img6" style="zoom:50%;" />
 </center>
 
-从 $SPADE$ 算法的整体示意图来看，生成器的输入可以是一个随机张量，这样生成的图像也是随机的；同样，这个张量也可以通过一个 $Image~Encoder$ 和一张风格图像计算得到，编码网络将输入图像编码成张量，这个张量就包含输入图像的风格，这样就能得到多样化的输出了。
+从 $SPADE$ 算法的整体示意图来看，生成器的输入可以是一个随机张量，这样生成的图像也是随机的；同样，这个张量也可以通过一个 $Image-Encoder$ 和一张风格图像计算得到，编码网络将输入图像编码成张量，这个张量就包含输入图像的风格，这样就能得到多样化的输出了。
 
 ### $FPSE$
 
