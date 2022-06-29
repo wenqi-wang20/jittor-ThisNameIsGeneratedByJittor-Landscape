@@ -32,13 +32,13 @@
 
 ### $GauGAN$
 
-$GauGAN$，即 $SPADE$ 的主要创新点在于使用了新的 $Spatially-Adaptive~Normalization$ 层来取代传统的 $Batch~Normalization$ 层，以此解决了 $pix2pix$ 等算法中会丢失部分输入语义分割图像信息的问题。主要的修改内容在于 $\gamma$ 和 $\beta$ 的计算不同。
+$GauGAN$，即 $SPADE$ 的主要创新点在于使用了新的 $Spatially-Adaptive \ Normalization$ 层来取代传统的 $Batch~Normalization$ 层，以此解决了 $pix2pix$ 等算法中会丢失部分输入语义分割图像信息的问题。主要的修改内容在于 $\gamma$ 和 $\beta$ 的计算不同。
 
 <center>
 <img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg1.png" alt="img1" style="zoom:33%;" />
 </center>
 
-在 $Batch~Normalization$ 中 $\gamma$ 和 $\beta$ 的计算是通过网络训练得到的，而 $Spatially-Adaptive~Normalization$ 中 $\gamma$ 和 $\beta$ 是通过语义分割图像计算得到的。
+在 $Batch \ Normalization$ 中 $\gamma$ 和 $\beta$ 的计算是通过网络训练得到的，而 $Spatially \ Adaptive~Normalization$ 中 $\gamma$ 和 $\beta$ 是通过语义分割图像计算得到的。
 
 <center>
 <img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg2.png" alt="img2" style="zoom:50%;" />
@@ -48,7 +48,7 @@ $GauGAN$，即 $SPADE$ 的主要创新点在于使用了新的 $Spatially-Adapti
 <img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg3.png" alt="img3" style="zoom:46.5%;" />
 </center>
 
-$Spatially-Adaptive~Normalization$ 的极算过程如公式 $(1)$ 所示。在 $Batch~Normalization$ 中， $\gamma$ 和 $\beta$ 是一维张量，其中每个值对应输入特征图的每个通道，而在 $Spatially-Adaptive~Normalization$ 中， $\gamma$ 和 $\beta$ 是三维矩阵，除了通道维度外还有宽和高维度，因此公式 $(1)$ 中 $\gamma$ 和 $\beta$ 下标包含 $c,y,x$ 三个符号。均值μ和标准差σ的计算如公式 $(2)、(3)$ 所示，这部分和 $Batch~Normalization$ 中的计算一样。
+$Spatially-Adaptive \ Normalization$ 的极算过程如公式 $(1)$ 所示。在 $Batch \ Normalization$ 中， $\gamma$ 和 $\beta$ 是一维张量，其中每个值对应输入特征图的每个通道，而在 Spatially-Adaptive~Normalization$ 中， $\gamma$ 和 $\beta$ 是三维矩阵，除了通道维度外还有宽和高维度，因此公式 $(1)$ 中 $\gamma$ 和 $\beta$ 下标包含 $c,y,x$ 三个符号。均值μ和标准差σ的计算如公式 $(2)(3)$ 所示，这部分和 $Batch~Normalization$ 中的计算一样。
 
 <center>
 <img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg4.png" alt="img4" style="zoom: 33%;" />
@@ -70,7 +70,7 @@ $Spatially-Adaptive~Normalization$ 的极算过程如公式 $(1)$ 所示。在 $
 
 ### $FPSE$
 
-$CC-FPSE$ 网络主要是受 $SPACE$ 网络启发而来的。主要使用了一个由权重预测网络预测的条件卷积生成器 G 和一个特征嵌入的鉴别器 D 组成，详细架构如下图所示。
+$CC-FPSE$ 网络主要是受 $SPADE$ 网络启发而来的。主要使用了一个由权重预测网络预测的条件卷积生成器 G 和一个特征嵌入的鉴别器 D 组成，详细架构如下图所示。
 
 <center>
 <img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimage-20220629151511682.png" alt="image-20220629151511682" style="zoom:33%;" />
