@@ -1,0 +1,1 @@
+使用了jittor自带的vgg19，即jittor.models.vgg19(pretrained=True)
