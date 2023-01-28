@@ -35,12 +35,12 @@
 $GauGAN$，即 $SPADE$ 的主要创新点在于使用了新的 $Spatially-Adaptive \ Normalization$ 层来取代传统的 $Batch \ Normalization$ 层，以此解决了 $pix2pix$ 等算法中会丢失部分输入语义分割图像信息的问题。主要的修改内容在于 $\gamma$ 和 $\beta$ 的计算不同。
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg1.png" alt="img1" style="width:20%;" />
+<img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg1.png" alt="img1" style="zoom:20%;" />
 </p>
 
 在 $Batch \ Normalization$ 中 $\gamma$ 和 $\beta$ 的计算是通过网络训练得到的，而 $Spatially \ Adaptive \ Normalization$ 中 $\gamma$ 和 $\beta$ 是通过语义分割图像计算得到的。
 
-<img src="/Users/wangwenqi/Library/Application Support/typora-user-images/image-20230128151333879.png" alt="image-20230128151333879" style="width:100%;" />
+<img src="assets\eq1.png" style="width:100%;" />
 
 $Spatially-Adaptive \ Normalization$ 的极算过程如公式 $(1)$ 所示。在 $Batch \ Normalization$ 中， $\gamma$ 和 $\beta$ 是一维张量，其中每个值对应输入特征图的每个通道，而在 $Spatially-Adaptive \ Normalization$ 中， $\gamma$ 和 $\beta$ 是三维矩阵，除了通道维度外还有宽和高维度，因此公式 $(1)$ 中 $\gamma$ 和 $\beta$ 下标包含 $c,y,x$ 三个符号。均值 μ 和标准差 σ 的计算如公式 $(2)(3)$ 所示，这部分和 $Batch \ Normalization$ 中的计算一样。
 
@@ -74,7 +74,7 @@ $CC-FPSE$ 网络主要是受 $SPADE$ 网络启发而来的。主要使用了一�
 </p>
 在传统的卷积层中，相同的卷积核应用于所有样本和所有空间位置，而不管它们有不同的语义布局。而在 $FPSE$ 网络结构中，认为这种卷及操作对于语义图像的合成不够灵活和有效。所以为了更好地将 semantic image 的布局信息纳入到图像生成的过程中，本篇文章提出了基于语义布局来预测卷积核权值的方法。给定输入特征图 $X \in R^{C \times H \times W}$，通过一个核大小为 $k \times k$ 的卷积层来输出特征图 $Y \in  R ^{D \times H \times W}$。其中使用权值预测网络，使用语义标签作为输入，输出每一个条件卷积层的卷积核权值。**当然，但实际操作的过程中，如果预测所有的卷积核权值，会导致过高的计算成本和 GPU 内存占用**，所以在真实的网络中，只预测轻量级的深度卷积的权值。
 
-![image-20230128151424434](/Users/wangwenqi/Library/Application Support/typora-user-images/image-20230128151424434.png)
+![image-20230128151424434](assets\eq2.png)
 
 上图是采取的训练损失函数。其余的鉴别器网络基本与 $SPADE$ 一致。论文中给出的实验效果要优于 $SPADE$。
 
