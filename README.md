@@ -34,37 +34,49 @@
 
 $GauGAN$，即 $SPADE$ 的主要创新点在于使用了新的 $Spatially-Adaptive \ Normalization$ 层来取代传统的 $Batch \ Normalization$ 层，以此解决了 $pix2pix$ 等算法中会丢失部分输入语义分割图像信息的问题。主要的修改内容在于 $\gamma$ 和 $\beta$ 的计算不同。
 
-<center>
-<img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg1.png" alt="img1" style="zoom:33%;" />
-</center>
+<p align="center">
+<img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg1.png" alt="img1" style="zoom:20%;" />
+</p>
 
 在 $Batch \ Normalization$ 中 $\gamma$ 和 $\beta$ 的计算是通过网络训练得到的，而 $Spatially \ Adaptive \ Normalization$ 中 $\gamma$ 和 $\beta$ 是通过语义分割图像计算得到的。
+$$
+\begin{equation}
+\gamma_{c, y, x}^{i}(\mathbf{m}) \frac{h_{n, c, y, x}^{i}-\mu_{c}^{i}}{\sigma_{c}^{i}}+\beta_{c, y, x}^{i}(\mathbf{m})
+\end{equation}
+$$
 
-<center>
-<img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg2.png" alt="img2" style="zoom:50%;" />
-</center>
+$$
+\begin{equation}
+\mu_{c}^{i}=\frac{1}{N H^{i} W^{i}} \sum_{n, y, x} h_{n, c, y, x}^{i}
+\end{equation}
+$$
 
-<center>
-<img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg3.png" alt="img3" style="zoom:46.5%;" />
-</center>
+$$
+\begin{equation}
+\sigma^{i}_{c}=\sqrt{\frac{1}{N H^{i} W^{i}} \sum_{n, y, x} ((h_{n, c, y, x}^{i})^2-(\mu^i_c)^2)}
+\end{equation}
+$$
 
-$Spatially-Adaptive \ Normalization$ 的极算过程如公式 $(1)$ 所示。在 $Batch \ Normalization$ 中， $\gamma$ 和 $\beta$ 是一维张量，其中每个值对应输入特征图的每个通道，而在 Spatially-Adaptive \ Normalization$ 中， $\gamma$ 和 $\beta$ 是三维矩阵，除了通道维度外还有宽和高维度，因此公式 $(1)$ 中 $\gamma$ 和 $\beta$ 下标包含 $c,y,x$ 三个符号。均值μ和标准差σ的计算如公式 $(2)(3)$ 所示，这部分和 $Batch \ Normalization$ 中的计算一样。
+$Spatially-Adaptive \ Normalization$ 的极算过程如公式 $(1)$ 所示。在 $Batch \ Normalization$ 中， $\gamma$ 和 $\beta$ 是一维张量，其中每个值对应输入特征图的每个通道，而在 $Spatially-Adaptive \ Normalization$ 中， $\gamma$ 和 $\beta$ 是三维矩阵，除了通道维度外还有宽和高维度，因此公式 $(1)$ 中 $\gamma$ 和 $\beta$ 下标包含 $c,y,x$ 三个符号。均值 μ 和标准差 σ 的计算如公式 $(2)(3)$ 所示，这部分和 $Batch \ Normalization$ 中的计算一样。
 
-<center>
+<p align="center">
 <img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg4.png" alt="img4" style="zoom: 33%;" />
-</center>
+</p>
+
 
 网络结构方面，生成器采用堆叠多个 $SPADE \ ResBlk$ 实现，其中每个 $SPADE \ ResBlk$ 的结构如左侧所示， $Spatially-Adaptive \ Normalization$ 层中的 $\gamma$ 和 $\beta$ 参数通过输入的语义分割图像计算得到。
 
-<center>
-<img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg5.png" alt="img5" style="zoom:50%;" />
-</center>
+<p align="center">
+<img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg5.png" alt="img5" style="zoom:30%;" />
+</p>
+
 
 判别器和 $pix2pixHD$ 一样采用常见的 $Patch-GAN$ 形式。
 
-<center>
-<img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg6.png" alt="img6" style="zoom:50%;" />
-</center>
+<p align="center">
+<img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimg6.png" alt="img6" style="zoom:30%;" />
+</p>
+
 
 从 $SPADE$ 算法的整体示意图来看，生成器的输入可以是一个随机张量，这样生成的图像也是随机的；同样，这个张量也可以通过一个 $Image-Encoder$ 和一张风格图像计算得到，编码网络将输入图像编码成张量，这个张量就包含输入图像的风格，这样就能得到多样化的输出了。
 
@@ -72,16 +84,16 @@ $Spatially-Adaptive \ Normalization$ 的极算过程如公式 $(1)$ 所示。在
 
 $CC-FPSE$ 网络主要是受 $SPADE$ 网络启发而来的。主要使用了一个由权重预测网络预测的条件卷积生成器 G 和一个特征嵌入的鉴别器 D 组成，详细架构如下图所示。
 
-<center>
+<p align="center">
 <img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimage-20220629151511682.png" alt="image-20220629151511682" style="zoom:33%;" />
-</center>
+</p>
 
 在传统的卷积层中，相同的卷积核应用于所有样本和所有空间位置，而不管它们有不同的语义布局。而在 $FPSE$ 网络结构中，认为这种卷及操作对于语义图像的合成不够灵活和有效。所以为了更好地将 semantic image 的布局信息纳入到图像生成的过程中，本篇文章提出了基于语义布局来预测卷积核权值的方法。给定输入特征图 $X \in R^{C \times H \times W}$，通过一个核大小为 $k \times k$ 的卷积层来输出特征图 $Y \in  R ^{D \times H \times W}$。其中使用权值预测网络，使用语义标签作为输入，输出每一个条件卷积层的卷积核权值。**当然，但实际操作的过程中，如果预测所有的卷积核权值，会导致过高的计算成本和 GPU 内存占用**，所以在真实的网络中，只预测轻量级的深度卷积的权值。
-
-
-<center>
-<img src="https://raw.githubusercontent.com/wenqi-wang20/img/main/img/MDpicturesimage-20220629153908458.png" alt="image-20220629153908458" style="zoom: 50%;" />
-</center>
+$$
+\begin{equation}
+\begin{array}{l}{{L_{D}=-\mathbb{E}_{(x,y)}[m i n(0,-1+D(x,y)]-\mathbb{E}_{z,y}[m i n(0,-1-D(G(z,y),y)],}}\\ {{L_{G}=-\mathbb{E}_{(z,y)}D(G(z,y),y)+\lambda_{P}\mathbb{E}_{(z,y)}L_{P}(G(z,y),x)+\lambda_{P}\mathrm{E}_{(z,y)}L_{F M}(G(z,y),x),}}\end{array}
+\end{equation}
+$$
 
 上图是采取的训练损失函数。其余的鉴别器网络基本与 $SPADE$ 一致。论文中给出的实验效果要优于 $SPADE$。
 
